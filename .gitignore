@@ -1,3 +1,17 @@
+# Project specific
+# =========================
+
+bin/
+src/main/resources/wikipedia/*
+
+# Eclipse specific
+# =========================
+
+.cache*
+.classpath
+.project
+.settings/
+
 *.class
 *.log
 
