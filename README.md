@@ -1,6 +1,6 @@
 # Ranking Programming Languages In English Wikipedia
 
-This repo contains the code solution for a programming assignment from the Coursera course on [Big Data Analysis with Scala and Spark](https://www.coursera.org/learn/scala-spark-big-data/home/info). Passed all [unit tests](src/main/scala/test/wikipedia/WikipediaSuite.scala). My results are shown in the top section and the rest of the questions are answered inline.
+This repo contains the code solution for a programming assignment from the Coursera course on [Big Data Analysis with Scala and Spark](https://www.coursera.org/learn/scala-spark-big-data/home/info). Passed all [unit tests](src/test/scala/wikipedia/WikipediaSuite.scala). My results are shown in the top section and the rest of the questions are answered inline.
 
 ## Results
 
