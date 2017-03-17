@@ -4,7 +4,7 @@ This repo contains the code solution for a programming assignment from the Cours
 
 ## Results
 
-`SparkContext` configuration: min 5 partitions, with 2GB memory each
+`SparkContext` configuration: 5 cores, `spark.executor.memory`=8GB
 
 ```scala
 List((JavaScript,1692), (C#,705), (Java,586), (CSS,372), (C++,334), (MATLAB,295)
@@ -15,11 +15,11 @@ List((JavaScript,1692), (C#,705), (Java,586), (CSS,372), (C++,334), (MATLAB,295)
 
 ```
 
-Processing Part 1: naive ranking took 13755 ms.
+Processing Part 1: naive ranking took 9997 ms.
 
-Processing Part 2: ranking using inverted index took 15476 ms.
+Processing Part 2: ranking using inverted index took 12316 ms.
 
-Processing Part 3: ranking using reduceByKey took 6377 ms.
+Processing Part 3: ranking using reduceByKey took 5501 ms.
 
 ## Instructions
 

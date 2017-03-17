@@ -13,14 +13,15 @@ object WikipediaRanking {
   val langs = List(
     "JavaScript", "Java", "PHP", "Python", "C#", "C++", "Ruby", "CSS",
     "Objective-C", "Perl", "Scala", "Haskell", "MATLAB", "Clojure", "Groovy")
-  val minPartitions = 5
-  val conf = new SparkConf().setAppName("WikipediaRanking").setMaster(s"local[$minPartitions]").set("spark.executor.memory", "2g")
+  val cores = 5
+  val conf = new SparkConf().setAppName("WikipediaRanking")
+    .setMaster(s"local[$cores]").set("spark.executor.memory", "8g")
   val sc = new SparkContext(conf)
-  
+
   // Hint: use a combination of `sc.textFile`, `WikipediaData.filePath` and `WikipediaData.parse`
   // map (parse) is faster than mapPartitions (parseBatch) in this case
-  
-  val wikiRdd: RDD[WikipediaArticle] = sc.textFile(WikipediaData.filePath, minPartitions).map {
+
+  val wikiRdd: RDD[WikipediaArticle] = sc.textFile(WikipediaData.filePath).map {
     line => WikipediaData.parse(line)
   }.cache()
 
