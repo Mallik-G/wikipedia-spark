@@ -1,13 +1,12 @@
 # Ranking Programming Languages In English Wikipedia
 
-This repo contains the code solution for a programming assignment from the Coursera course on [Big Data Analysis with Scala and Spark](https://www.coursera.org/learn/scala-spark-big-data/home/info). Passed all [unit tests](src/main/test/wikipedia/WikipediaSuite.scala). My results are shown in the top section and the rest of the questions are answered inline.
+This repo contains the code solution for a programming assignment from the Coursera course on [Big Data Analysis with Scala and Spark](https://www.coursera.org/learn/scala-spark-big-data/home/info). Passed all [unit tests](src/main/scala/test/wikipedia/WikipediaSuite.scala). My results are shown in the top section and the rest of the questions are answered inline.
 
 ## Results
 
 `SparkContext` configuration: min 5 partitions, with 2GB memory each
 
-```
-
+```scala
 List((JavaScript,1692), (C#,705), (Java,586), (CSS,372), (C++,334), (MATLAB,295)
 
 , (Python,286), (PHP,279), (Perl,144), (Ruby,120), (Haskell,54), (Objective-C,47
@@ -72,9 +71,9 @@ Using `occurrencesOfLang`, implement a method `rankLangs` which computes a list 
 
 An example of what `rankLangs` might return might look like this, for example:
 
-1
-
+```scala
 List(("Scala",999999),("JavaScript",1278),("LOLCODE",982),("Java",42))
+```
 
 The list should be sorted in descending order. That is, according to this ranking, the pair with the highest second component (the count) should be the first element of the list.
 
@@ -118,7 +117,7 @@ Again, the list should be sorted in descending order. That is, according to this
 
 *Can you notice an improvement in performance compared to measuring both the computation of the index and the computation of the ranking as we did in attempt #2? If so, can you think of a reason?*
 
-> Yes, #3 is the fastest because it has the least number of transformations and actions.
+> Yes, #3 is the fastest because it has the least number of transformations and actions. #1 is slow because it works on one RDD for each lang. #2 is similar to #1 and on top of that, #2 has to compute an additional RDD (the index).
 
 ## References
 
