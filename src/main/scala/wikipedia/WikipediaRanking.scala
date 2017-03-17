@@ -13,11 +13,13 @@ object WikipediaRanking {
   val langs = List(
     "JavaScript", "Java", "PHP", "Python", "C#", "C++", "Ruby", "CSS",
     "Objective-C", "Perl", "Scala", "Haskell", "MATLAB", "Clojure", "Groovy")
-
-  val conf = new SparkConf().setAppName("WikipediaRanking").setMaster("local[4]").set("spark.executor.memory", "8g")
+  val minPartitions = 5
+  val conf = new SparkConf().setAppName("WikipediaRanking").setMaster(s"local[$minPartitions]").set("spark.executor.memory", "2g")
   val sc = new SparkContext(conf)
+  
   // Hint: use a combination of `sc.textFile`, `WikipediaData.filePath` and `WikipediaData.parse`
-  val minPartitions = 2
+  // map (parse) is faster than mapPartitions (parseBatch) in this case
+  
   val wikiRdd: RDD[WikipediaArticle] = sc.textFile(WikipediaData.filePath, minPartitions).map {
     line => WikipediaData.parse(line)
   }.cache()
@@ -38,7 +40,8 @@ object WikipediaRanking {
       }
     }
     val add: (Int, Int) => Int = _ + _
-    rdd.aggregate(0)(count, add)
+    val default = 0
+    rdd.aggregate(default)(count, add)
   }
 
   /* (1) Use `occurrencesOfLang` to compute the ranking of the languages
@@ -60,11 +63,12 @@ object WikipediaRanking {
    */
   def makeIndex(langs: List[String], rdd: RDD[WikipediaArticle]): RDD[(String, Iterable[WikipediaArticle])] = {
     rdd.flatMap {
-      article => langs.filter {
-        lang => article.text.split(" ").contains(lang)
-      }.map {
-        lang => (lang, article)
-      }
+      article =>
+        langs.filter {
+          lang => article.text.split(" ").contains(lang)
+        }.map {
+          lang => (lang, article)
+        }
     }.groupByKey()
   }
 
@@ -77,8 +81,8 @@ object WikipediaRanking {
   def rankLangsUsingIndex(index: RDD[(String, Iterable[WikipediaArticle])]): List[(String, Int)] = {
     val asc = false
     index.mapValues {
-      articles => articles.size 
-    }.sortBy(pair => pair._2, asc).collect().toList 
+      articles => articles.size
+    }.sortBy(pair => pair._2, asc).collect().toList
   }
 
   /* (3) Use `reduceByKey` so that the computation of the index and the ranking are combined.
@@ -91,11 +95,12 @@ object WikipediaRanking {
   def rankLangsReduceByKey(langs: List[String], rdd: RDD[WikipediaArticle]): List[(String, Int)] = {
     val asc = false
     rdd.flatMap {
-      article => langs.filter {
-        lang => article.text.split(" ").contains(lang)
-      }.map {
-        lang => (lang, 1)
-      }
+      article =>
+        langs.filter {
+          lang => article.text.split(" ").contains(lang)
+        }.map {
+          lang => (lang, 1)
+        }
     }.reduceByKey(_ + _).sortBy(pair => pair._2, asc).collect().toList
   }
 
