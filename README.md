@@ -117,7 +117,7 @@ Again, the list should be sorted in descending order. That is, according to this
 
 *Can you notice an improvement in performance compared to measuring both the computation of the index and the computation of the ranking as we did in attempt #2? If so, can you think of a reason?*
 
-> Yes, #3 is the fastest because it has the least number of transformations and actions. #1 is slow because it works on one RDD for each lang. #2 is similar to #1 and on top of that, #2 has to compute an additional RDD (the index).
+> Yes, #3 is the fastest because `reduceByKey` reduces the amount of data shuffled. Shuffling is the moving of data from one node to another to be grouped with its key (language in this case). #1 is slow because it works on one RDD for each lang. #2 is similar to #1 and on top of that, #2 has to compute an additional RDD (the index).
 
 ## References
 
